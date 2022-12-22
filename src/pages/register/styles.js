@@ -28,8 +28,6 @@ export const Row = styled.div`
     margin-top: 20px;
 `
 
-
-
 export const Title = styled.h2`
     font-family: 'Open Sans';
     font-style: normal;
@@ -60,19 +58,7 @@ export const SubtitleLogin = styled.p`
     margin-bottom: 35px;
 `
 
-
-export const EsqueciText = styled.p`
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 19px;
-    cursor: pointer;
-
-    color: #E5E044;
-` 
-
-export const CriarText = styled.p`
+export const VoltarText = styled.p`
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { MdEmail, MdLock } from 'react-icons/md'
+import { MdEmail, MdLock, MdPermIdentity, MdCall } from 'react-icons/md'
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
@@ -8,16 +8,13 @@ import { api } from '../../services/api';
 import { useForm } from "react-hook-form";
 
 
-import { Container, Title, Column, TitleLogin, SubtitleLogin, EsqueciText, CriarText, Row, Wrapper } from './styles';
+import { Container, Title, Column, TitleLogin, SubtitleLogin, VoltarText, Row, Wrapper } from './styles';
 
-const Login = () => {
+const Register = () => {
 
-    const navigate = useNavigate()
-    const handleClickRegister = () => {
-        navigate('/register')
-    }
-    const handleClickForget = () => {
-        alert('Esqueceu a senha');
+    const navigate = useNavigate();
+    const handleClickSignIn = () => {
+        navigate('/login')
     }
 
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -30,13 +27,12 @@ const Login = () => {
             const { data } = await api.get(`/users?email=${formData.email}&senha=${formData.senha}`);
 
             if (data.length && data[0].id) {
-                navigate('/feed')
+                alert('Usuário já existe. Efetue o login')
                 return
             }
-
-            alert('Usuário ou senha inválido')
         } catch (e) {
-            //TODO: HOUVE UM ERRO
+            alert('Simulação de cadastro efetuado!')
+            navigate('/login')
         }
     };
 
@@ -51,18 +47,26 @@ const Login = () => {
             </Column>
             <Column>
                 <Wrapper>
-                    <TitleLogin>Faça seu login</TitleLogin>
-                    <SubtitleLogin>Faça seu login e make the change._</SubtitleLogin>
+                    <TitleLogin>Faça seu cadastro</TitleLogin>
+                    <SubtitleLogin>Crie sua conta e make the change._</SubtitleLogin>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Input placeholder="E-mail" leftIcon={<MdEmail />} name="email" control={control} />
+                        <Input placeholder="Nome completo" leftIcon={<MdPermIdentity />} name="nome" control={control} />
+                        {errors.nome && <span>Nome completo é obrigatório</span>}
+
+                        <Input placeholder="Seu melhor @e-mail" leftIcon={<MdEmail />} name="email" control={control} />
                         {errors.email && <span>E-mail é obrigatório</span>}
+
+                        <Input type="tel" placeholder="Celular ex: 11 96123-4567" leftIcon={<MdCall />}
+                            name="celular" control={control} pattern="[0-9]{2} [0-9]{5}-[0-9]{4}" />
+                        {errors.celular && <span>Número de celular é obrigatório</span>}
+
                         <Input type="password" placeholder="Senha" leftIcon={<MdLock />} name="senha" control={control} />
                         {errors.senha && <span>Senha é obrigatório</span>}
-                        <Button title="Entrar" variant="secondary" type="submit" />
+
+                        <Button title="Cadastrar" variant="secondary" type="submit" />
                     </form>
                     <Row>
-                        <EsqueciText onClick={handleClickForget}>Esqueci minha senha</EsqueciText>
-                        <CriarText onClick={handleClickRegister}>Criar Conta</CriarText>
+                        <VoltarText onClick={handleClickSignIn}>Voltar para login</VoltarText>
                     </Row>
                 </Wrapper>
             </Column>
@@ -70,4 +74,4 @@ const Login = () => {
     </>)
 }
 
-export { Login }
+export { Register }
